@@ -1,18 +1,15 @@
-# Use Alpine as the base image
-FROM alpine:latest
+FROM alpine:3.21
 
-# Install a package (e.g., curl)
-RUN apk add --no-cache ca-certificates curl
+RUN apk add --no-cache ca-certificates curl \
+    && update-ca-certificates
 
-# Copy other files
-COPY crontab /hello-cron
+COPY crontab /etc/cron.d/hello-cron
 COPY entrypoint.sh /entrypoint.sh
 
-RUN crontab hello-cron
-RUN chmod +x entrypoint.sh
+RUN chmod 0644 /etc/cron.d/hello-cron \
+    && chmod +x /entrypoint.sh \
+    && crontab /etc/cron.d/hello-cron
 
 ENTRYPOINT ["/entrypoint.sh"]
 
-# -f | Stay in foreground mode, don't daemonize.
-# -l loglevel | Tell  cron  what to log about jobs (errors are logged regardless of this value) as the sum of the following values:
-CMD ["crond","-f", "-l", "2"]
+CMD ["crond", "-f", "-l", "2"]
