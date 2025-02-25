@@ -1,3 +1,5 @@
 45 * * * * curl --request POST --header "k: $SCHEDULE_KEY" --header "Content-Type: application/json" "https://wc-subscriptions-g2xcn.ondigitalocean.app/api/shopify/orders?k=$SCHEDULE_KEY" >> /var/log/`date +\%Y-\%m-\%d`_cron.log 2>&1
 
+10 * * * * curl --request GET --header "x-api-key: $SCHEDULE_SUB_KEY" --header "Content-Type: text/html" "https://wholesale-club-45n2z.ondigitalocean.app/schedule/run" >> /var/log/`date +\%Y-\%m-\%d`_cron.log 2>&1
+
 # An empty line is required at the end of this file for a valid cron file.
